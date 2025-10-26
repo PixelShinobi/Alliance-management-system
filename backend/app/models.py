@@ -1,4 +1,5 @@
-from sqlalchemy import Column, Integer, String, Float
+from sqlalchemy import Column, Integer, String, Float, DateTime, Text
+from datetime import datetime
 from .database import Base
 
 
@@ -13,3 +14,6 @@ class AllianceMember(Base):
     merits = Column(Integer, nullable=False, default=0)
     units_killed = Column(Integer, nullable=False, default=0)
     units_dead = Column(Integer, nullable=False, default=0)
+    role = Column(String, nullable=True, default="Member")  # Allowed roles: Leader, R4, Member
+    notes = Column(Text, nullable=True, default="")
+    last_updated = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)

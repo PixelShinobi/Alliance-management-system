@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git clone:*)",
+      "Bash(python -m venv:*)",
+      "Bash(venvScriptsactivate)",
+      "Bash(pip install:*)",
+      "Bash(./venv/Scripts/pip:*)",
+      "Bash(./venv/Scripts/uvicorn:*)",
+      "Bash(npm install)",
+      "Bash(del \"C:\\Users\\Jizhou\\Desktop\\Alliance-management-system\\INSTALL_TESSERACT.md\")",
+      "Bash(npm install:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

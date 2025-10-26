@@ -4,6 +4,31 @@ from typing import List, Optional
 from . import models, schemas
 
 
+def add_calculated_fields(member: models.AllianceMember, total_merits: int = None) -> dict:
+    """Calculate and add all calculated fields to member data"""
+    member_dict = {
+        "id": member.id,
+        "name": member.name,
+        "member_id": member.member_id,
+        "power": member.power,
+        "merits": member.merits,
+        "units_killed": member.units_killed,
+        "units_dead": member.units_dead,
+        "role": member.role,
+        "notes": member.notes,
+        "last_updated": member.last_updated,
+        "merit_to_power_ratio": (member.merits / member.power * 100) if member.power > 0 else None,
+        "kd_ratio": (member.units_killed / member.units_dead) if member.units_dead > 0 else None,
+        "contribution_percentage": (member.merits / total_merits * 100) if total_merits and total_merits > 0 else None
+    }
+    return member_dict
+
+
+def add_merit_to_power_ratio(member: models.AllianceMember) -> dict:
+    """Backwards compatibility wrapper"""
+    return add_calculated_fields(member)
+
+
 def get_member(db: Session, member_id: int) -> Optional[models.AllianceMember]:
     """Get a single alliance member by database ID"""
     return db.query(models.AllianceMember).filter(models.AllianceMember.id == member_id).first()
@@ -28,6 +53,13 @@ def get_members(db: Session, skip: int = 0, limit: int = 100, search: Optional[s
     return query.offset(skip).limit(limit).all()
 
 
+def get_members_with_calculations(db: Session, skip: int = 0, limit: int = 100, search: Optional[str] = None) -> List[dict]:
+    """Get all alliance members with calculated fields"""
+    members = get_members(db, skip, limit, search)
+    total_merits = sum(m.merits for m in db.query(models.AllianceMember).all())
+    return [add_calculated_fields(member, total_merits) for member in members]
+
+
 def create_member(db: Session, member: schemas.AllianceMemberCreate) -> models.AllianceMember:
     """Create a new alliance member"""
     db_member = models.AllianceMember(
@@ -36,7 +68,9 @@ def create_member(db: Session, member: schemas.AllianceMemberCreate) -> models.A
         power=member.power,
         merits=member.merits,
         units_killed=member.units_killed,
-        units_dead=member.units_dead
+        units_dead=member.units_dead,
+        role=member.role or "Member",
+        notes=member.notes or ""
     )
     db.add(db_member)
     db.commit()

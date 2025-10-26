@@ -40,6 +40,18 @@ export const memberAPI = {
     const response = await api.get<AllianceStats>('/stats');
     return response.data;
   },
+
+  exportToCSV: async (): Promise<Blob> => {
+    const response = await api.get('/export-csv', {
+      responseType: 'blob',
+    });
+    return response.data;
+  },
+
+  bulkDelete: async (memberIds: number[]): Promise<{ deleted_count: number; failed_count: number; failed_ids: number[] }> => {
+    const response = await api.post('/members/bulk-delete', memberIds);
+    return response.data;
+  },
 };
 
 export default api;

@@ -11,28 +11,25 @@ function Statistics({ stats }: StatisticsProps) {
 
   return (
     <div className="statistics">
-      <h2>Alliance Statistics</h2>
-      <div className="stats-grid">
-        <div className="stat-card">
-          <div className="stat-label">Total Members</div>
-          <div className="stat-value">{stats.total_members}</div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-label">Total Power</div>
-          <div className="stat-value">{stats.total_power.toLocaleString()}</div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-label">Total Merits</div>
-          <div className="stat-value">{stats.total_merits.toLocaleString()}</div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-label">Total Units Killed</div>
-          <div className="stat-value">{stats.total_units_killed.toLocaleString()}</div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-label">Total Units Dead</div>
-          <div className="stat-value">{stats.total_units_dead.toLocaleString()}</div>
-        </div>
+      <div className="stat-card">
+        <h3>Total Members</h3>
+        <p className="value">{stats.total_members}</p>
+      </div>
+      <div className="stat-card">
+        <h3>Total Power</h3>
+        <p className="value">{stats.total_power.toLocaleString()}</p>
+      </div>
+      <div className="stat-card">
+        <h3>Total Merits</h3>
+        <p className="value">{stats.total_merits.toLocaleString()}</p>
+      </div>
+      <div className="stat-card">
+        <h3>Total Units Killed</h3>
+        <p className="value">{stats.total_units_killed.toLocaleString()}</p>
+      </div>
+      <div className="stat-card">
+        <h3>Total Units Dead</h3>
+        <p className="value">{stats.total_units_dead.toLocaleString()}</p>
       </div>
     </div>
   );

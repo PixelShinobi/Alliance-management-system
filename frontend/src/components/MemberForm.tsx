@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { AllianceMember, AllianceMemberCreate } from '../types';
+import { AllianceMember, AllianceMemberCreate, normalizeRole } from '../types';
 
 interface MemberFormProps {
   member?: AllianceMember | null;
@@ -15,6 +15,8 @@ function MemberForm({ member, onSubmit, onCancel }: MemberFormProps) {
     merits: 0,
     units_killed: 0,
     units_dead: 0,
+    role: 'Member',
+    notes: '',
   });
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
@@ -28,15 +30,17 @@ function MemberForm({ member, onSubmit, onCancel }: MemberFormProps) {
         merits: member.merits,
         units_killed: member.units_killed,
         units_dead: member.units_dead,
+        role: normalizeRole(member.role),
+        notes: member.notes || '',
       });
     }
   }, [member]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: name === 'name' ? value : Number(value),
+      [name]: name === 'name' || name === 'role' || name === 'notes' ? value : Number(value),
     }));
   };
 
@@ -64,6 +68,8 @@ function MemberForm({ member, onSubmit, onCancel }: MemberFormProps) {
         merits: 0,
         units_killed: 0,
         units_dead: 0,
+        role: 'Member',
+        notes: '',
       });
     } catch (err) {
       console.error('Form submission error:', err);
@@ -154,6 +160,32 @@ function MemberForm({ member, onSubmit, onCancel }: MemberFormProps) {
             onChange={handleChange}
             min="0"
             placeholder="0"
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="role">Role</label>
+          <select
+            id="role"
+            name="role"
+            value={formData.role}
+            onChange={handleChange}
+          >
+            <option value="Leader">Leader</option>
+            <option value="R4">R4</option>
+            <option value="Member">Member</option>
+          </select>
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="notes">Notes (Admin Only)</label>
+          <textarea
+            id="notes"
+            name="notes"
+            value={formData.notes}
+            onChange={handleChange}
+            placeholder="Add any notes about this member..."
+            rows={3}
           />
         </div>
 
