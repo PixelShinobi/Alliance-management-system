@@ -47,9 +47,9 @@ body {
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(600px circle at 10% 20%, rgba(95, 75, 255, 0.25), transparent 60%),
-    radial-gradient(500px circle at 80% 10%, rgba(255, 95, 109, 0.2), transparent 55%),
-    radial-gradient(700px circle at 50% 85%, rgba(72, 187, 255, 0.18), transparent 60%);
+    radial-gradient(600px circle at 10% 20%, rgba(95, 75, 255, 0.15), transparent 60%),
+    radial-gradient(500px circle at 80% 10%, rgba(255, 95, 109, 0.12), transparent 55%),
+    radial-gradient(700px circle at 50% 85%, rgba(72, 187, 255, 0.1), transparent 60%);
   filter: blur(10px);
   z-index: 0;
 }
@@ -121,6 +121,19 @@ body {
   border-radius: 999px;
   background: rgba(109, 139, 255, 0.18);
   border: 1px solid rgba(109, 139, 255, 0.35);
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+.creator-chip:hover {
+  background: rgba(109, 139, 255, 0.3);
+  border-color: rgba(109, 139, 255, 0.6);
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(109, 139, 255, 0.4);
+}
+
+.creator-chip:active {
+  transform: scale(0.98);
 }
 
 .chip-label {

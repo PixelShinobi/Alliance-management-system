@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './App.css';
 import { AllianceMember, AllianceMemberCreate, AllianceStats, normalizeRole } from './types';
 import { memberAPI } from './services/api';
@@ -8,6 +8,7 @@ import Statistics from './components/Statistics';
 import SearchBar from './components/SearchBar';
 import Charts from './components/Charts';
 import Filter, { FilterOptions } from './components/Filter';
+import ThreeBackground, { ThreeBackgroundRef } from './components/ThreeBackground';
 
 function App() {
   const [members, setMembers] = useState<AllianceMember[]>([]);
@@ -23,6 +24,7 @@ function App() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [loginPassword, setLoginPassword] = useState('');
+  const threeBackgroundRef = useRef<ThreeBackgroundRef>(null);
 
   const loadMembers = async (search?: string) => {
     try {
@@ -277,6 +279,7 @@ function App() {
 
   return (
     <div className="app">
+      <ThreeBackground ref={threeBackgroundRef} />
       <div className="app-glow" />
       <div className="app-shell">
         <header className="primary-header">
@@ -290,7 +293,11 @@ function App() {
             </div>
           </div>
           <div className="header-right">
-            <div className="creator-chip">
+            <div
+              className="creator-chip"
+              onClick={() => threeBackgroundRef.current?.triggerNinjaEffect()}
+              style={{ cursor: 'pointer' }}
+            >
               <span className="chip-label">Crafted by</span>
               <span className="chip-value">Ninja Cat 忍者猫</span>
             </div>
@@ -346,29 +353,31 @@ function App() {
                 <h2>Member Management</h2>
                 <p>Search, filter, and take action on your alliance roster.</p>
               </div>
-              {isAdmin && (
-                <div className="section-actions">
-                  <button className="btn btn-secondary" onClick={handleExport}>
-                    📤 Export CSV
-                  </button>
-                  <label className="btn btn-secondary" htmlFor="csv-upload">
-                    📊 Import CSV
-                    <input
-                      id="csv-upload"
-                      type="file"
-                      accept=".csv,.txt"
-                      onChange={handleFileUpload}
-                      style={{ display: 'none' }}
-                    />
-                  </label>
-                  <button
-                    className="btn btn-primary"
-                    onClick={() => setShowForm(!showForm)}
-                  >
-                    {showForm ? 'Cancel' : '＋ Add Member'}
-                  </button>
-                </div>
-              )}
+              <div className="section-actions">
+                <button className="btn btn-secondary" onClick={handleExport}>
+                  📤 Export CSV
+                </button>
+                {isAdmin && (
+                  <>
+                    <label className="btn btn-secondary" htmlFor="csv-upload">
+                      📊 Import CSV
+                      <input
+                        id="csv-upload"
+                        type="file"
+                        accept=".csv,.txt"
+                        onChange={handleFileUpload}
+                        style={{ display: 'none' }}
+                      />
+                    </label>
+                    <button
+                      className="btn btn-primary"
+                      onClick={() => setShowForm(!showForm)}
+                    >
+                      {showForm ? 'Cancel' : '＋ Add Member'}
+                    </button>
+                  </>
+                )}
+              </div>
             </div>
 
             <div className="toolbar">
