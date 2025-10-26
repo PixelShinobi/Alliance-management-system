@@ -12,7 +12,7 @@ export interface ThreeBackgroundRef {
   triggerNinjaEffect: () => void;
 }
 
-const ThreeBackground = forwardRef<ThreeBackgroundRef>((props, ref) => {
+const ThreeBackground = forwardRef<ThreeBackgroundRef>((_props, ref) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const vantaRef = useRef<any>(null);
 
