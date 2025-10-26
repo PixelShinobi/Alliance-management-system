@@ -117,7 +117,11 @@ function App() {
   };
 
   const handleDeleteMember = async (id: number) => {
-    if (!window.confirm('Are you sure you want to delete this member?')) {
+    // Find the member to get their name
+    const member = members.find(m => m.id === id);
+    const memberName = member ? member.name : 'this member';
+
+    if (!window.confirm(`⚠️ Warning: Are you sure you want to delete "${memberName}"?\n\nThis action cannot be undone.`)) {
       return;
     }
 
@@ -126,8 +130,10 @@ function App() {
       await memberAPI.deleteMember(id);
       await loadMembers(searchTerm || undefined);
       await loadStats();
+      setError(`✅ Successfully deleted ${memberName}`);
+      setTimeout(() => setError(null), 3000);
     } catch (err) {
-      setError('Failed to delete member');
+      setError(`❌ Failed to delete ${memberName}`);
       console.error(err);
     }
   };

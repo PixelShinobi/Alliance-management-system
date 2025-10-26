@@ -26,6 +26,16 @@ function MemberList({ members, onEdit, onDelete, onBulkDelete, isAdmin }: Member
     }
   };
 
+  const getRoleOrder = (role?: AllianceRole | string | null): number => {
+    const normalized = normalizeRole(role ?? undefined);
+    switch (normalized) {
+      case 'Leader': return 1;
+      case 'R4': return 2;
+      case 'Member': return 3;
+      default: return 4;
+    }
+  };
+
   const sortedMembers = useMemo(() => {
     const sorted = [...members].sort((a, b) => {
       let aValue: any;
@@ -33,9 +43,12 @@ function MemberList({ members, onEdit, onDelete, onBulkDelete, isAdmin }: Member
 
       switch (sortField) {
         case 'name':
-        case 'role':
           aValue = (a[sortField] || '').toLowerCase();
           bValue = (b[sortField] || '').toLowerCase();
+          break;
+        case 'role':
+          aValue = getRoleOrder(a.role);
+          bValue = getRoleOrder(b.role);
           break;
         case 'merit_to_power_ratio':
         case 'kd_ratio':
@@ -144,9 +157,6 @@ function MemberList({ members, onEdit, onDelete, onBulkDelete, isAdmin }: Member
               <th className="sortable" onClick={() => handleSort('merit_to_power_ratio')}>
                 Merit/Power %{getSortIcon('merit_to_power_ratio')}
               </th>
-              <th className="sortable" onClick={() => handleSort('contribution_percentage')}>
-                Contribution %{getSortIcon('contribution_percentage')}
-              </th>
               <th className="sortable" onClick={() => handleSort('units_killed')}>
                 Kills{getSortIcon('units_killed')}
               </th>
@@ -184,11 +194,6 @@ function MemberList({ members, onEdit, onDelete, onBulkDelete, isAdmin }: Member
                 <td>
                   {member.merit_to_power_ratio !== null && member.merit_to_power_ratio !== undefined
                     ? `${member.merit_to_power_ratio.toFixed(2)}%`
-                    : 'N/A'}
-                </td>
-                <td>
-                  {member.contribution_percentage !== null && member.contribution_percentage !== undefined
-                    ? `${member.contribution_percentage.toFixed(2)}%`
                     : 'N/A'}
                 </td>
                 <td>{member.units_killed.toLocaleString()}</td>
