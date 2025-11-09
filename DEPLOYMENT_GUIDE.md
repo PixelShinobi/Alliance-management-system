@@ -153,10 +153,11 @@ Just push to GitHub - Render auto-deploys!
    - First request after inactivity will be slow (30-60 seconds)
    - Consider upgrading to paid plan for production
 
-2. **Database Location**
-   - Currently using SQLite (alliance.db)
-   - On Render, this resets when service redeploys
-   - For production, consider PostgreSQL (Render offers free tier)
+2. **Database**
+   - Now using PostgreSQL for production-ready persistence
+   - Configure database connection using environment variables
+   - Render offers free PostgreSQL tier (recommended for deployment)
+   - Set DATABASE_USER, DATABASE_PASSWORD, DATABASE_HOST, DATABASE_PORT, and DATABASE_NAME in environment variables
 
 3. **Admin Password**
    - Default: `admin615`

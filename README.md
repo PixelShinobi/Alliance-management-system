@@ -187,8 +187,8 @@ When the backend is running, you can access the interactive API documentation:
 ## Development
 
 ### Backend Development
-- The backend uses SQLite for simplicity
-- Database file: `alliance.db` (created automatically)
+- The backend uses PostgreSQL database
+- Configure database connection via environment variables in `.env` file (see `.env.example`)
 - Run with `--reload` flag for auto-restart on code changes
 
 ### Frontend Development
@@ -223,7 +223,7 @@ If port 8000 or 3000 is already in use, you can change the port:
 Make sure both backend and frontend are running and the CORS configuration in `backend/app/main.py` includes your frontend URL.
 
 ### Database issues
-Delete the `alliance.db` file to reset the database. It will be recreated on next startup.
+The application now uses PostgreSQL. Ensure your PostgreSQL server is running and the connection settings in the `.env` file are correct. To reset the database, you can drop and recreate the PostgreSQL database.
 
 ## License
 
